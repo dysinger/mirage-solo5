@@ -5,7 +5,7 @@
  (link_flags
   -cclib
   (:include solo5_abi_flag))
- (libraries mirage-solo5)
+ (libraries mirage-solo5 mirage-sleep.solo5)
  (foreign_stubs
   (language c)
   (names manifest)))

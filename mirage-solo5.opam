@@ -26,6 +26,7 @@ depends: [
   "mirage-runtime" {>= "4.6.0"}
   "mirage-sleep" {>= "4.0.0"}
   "duration"
+  "ocaml-solo5" {with-test}
 ]
 conflicts: [
   "io-page" {< "2.4.0"}
