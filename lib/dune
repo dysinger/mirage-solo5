@@ -15,11 +15,11 @@
   (copy %{dep} %{target})))
 
 (rule
- (enabled_if
-  (= %{context_name} solo5))
- (target libmirage-solo5_bindings.solo5.a)
- (action
-  (copy bindings/libmirage-solo5_bindings.a %{target})))
+  (enabled_if
+   (= %{context_name} ahv))
+  (target libmirage-solo5_bindings.ahv.a)
+  (action
+   (copy ahv/libmirage-solo5_bindings.a %{target})))
 
 (rule
  (target libmirage-solo5_bindings.default.a)
