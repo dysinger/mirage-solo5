@@ -1,0 +1,7 @@
+(lang dune 2.7)
+(name mirage-solo5)
+
+(context (default))
+
+(context (static (name ahv)
+                (platform unix)))

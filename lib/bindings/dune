@@ -1,10 +1,21 @@
 (rule
- (enabled_if
-  (= %{context_name} solo5))
- (deps
-  (source_tree .))
- (targets libmirage-solo5_bindings.a)
- (action
-  (no-infer
-   (progn
-    (run %{make})))))
+  (enabled_if
+   (= %{context_name} solo5))
+  (deps
+   (source_tree .))
+  (targets libmirage-solo5_bindings.a)
+  (action
+   (no-infer
+    (progn
+     (run %{make})))))
+
+(rule
+  (enabled_if
+   (= %{context_name} ahv))
+  (deps
+   (source_tree .))
+  (targets libmirage-solo5_bindings.a)
+  (action
+   (no-infer
+    (progn
+     (run %{make} TOPDIR=../../../solo5 CONFIG_TARGET=ahv CONFIG_AHV=1)))))
