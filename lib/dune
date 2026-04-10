@@ -5,11 +5,16 @@
  (libraries mirage-runtime bheap lwt metrics metrics-lwt duration
    mirage-sleep)
  (no_dynlink)
- (foreign_archives mirage-solo5_bindings))
+ (foreign_archives stub_bindings))
 
 (rule
- (target libmirage-solo5_bindings.a)
+ (targets stub_bindings.a)
  (action
-  (copy stub/libmirage-solo5_bindings.a %{target})))
+  (progn
+   (run cc -c -o bindings/stub/main.o bindings/stub/main.c)
+   (run cc -c -o bindings/stub/clock_stubs.o bindings/stub/clock_stubs.c)
+   (run cc -c -o bindings/stub/mm_stubs.o bindings/stub/mm_stubs.c)
+   (run ar r stub_bindings.a bindings/stub/main.o bindings/stub/clock_stubs.o bindings/stub/mm_stubs.o)
+   (run rm bindings/stub/main.o bindings/stub/clock_stubs.o bindings/stub/mm_stubs.o))))
 
 (include_subdirs unqualified)
