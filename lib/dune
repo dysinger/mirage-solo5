@@ -9,20 +9,6 @@
 
 (rule
  (target libmirage-solo5_bindings.a)
- (deps
-  (:dep libmirage-solo5_bindings.%{context_name}.a))
- (action
-  (copy %{dep} %{target})))
-
-(rule
-  (enabled_if
-   (= %{context_name} ahv))
-  (target libmirage-solo5_bindings.ahv.a)
-  (action
-   (copy ahv/libmirage-solo5_bindings.a %{target})))
-
-(rule
- (target libmirage-solo5_bindings.default.a)
  (action
   (copy stub/libmirage-solo5_bindings.a %{target})))
 
