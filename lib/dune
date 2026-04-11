@@ -4,17 +4,6 @@
  (private_modules lifecycle main memory time solo5)
  (libraries mirage-runtime bheap lwt metrics metrics-lwt duration
    mirage-sleep)
- (no_dynlink)
- (foreign_archives stub_bindings))
-
-(rule
- (targets stub_bindings.a)
- (action
-  (progn
-   (run cc -c -o bindings/stub/main.o bindings/stub/main.c)
-   (run cc -c -o bindings/stub/clock_stubs.o bindings/stub/clock_stubs.c)
-   (run cc -c -o bindings/stub/mm_stubs.o bindings/stub/mm_stubs.c)
-   (run ar r stub_bindings.a bindings/stub/main.o bindings/stub/clock_stubs.o bindings/stub/mm_stubs.o)
-   (run rm bindings/stub/main.o bindings/stub/clock_stubs.o bindings/stub/mm_stubs.o))))
+ (no_dynlink))
 
 (include_subdirs unqualified)

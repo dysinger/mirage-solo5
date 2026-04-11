@@ -28,8 +28,33 @@
 #ifndef AHV_ABI_H
 #define AHV_ABI_H
 
-#include <stddef.h>
-#include <stdint.h>
+/*
+ * ahv_abi.h: AHV guest hypercall ABI definitions.
+ *
+ * This header file must be kept self-contained with no external dependencies
+ * other than C99 headers.
+ */
+
+/* Self-contained types */
+#ifndef __SOLO5_TYPES_DEFINED
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
+typedef unsigned long uint64_t;
+typedef signed char int8_t;
+typedef short int16_t;
+typedef int int32_t;
+typedef long int64_t;
+typedef unsigned long uintptr_t;
+typedef long intptr_t;
+typedef unsigned long size_t;
+typedef long ssize_t;
+#define bool _Bool
+#define true 1
+#define false 0
+#define NULL ((void*)0)
+#define __SOLO5_TYPES_DEFINED 1
+#endif
 
 #define AHV_ABI_VERSION 1
 #define HVT_ABI_VERSION 1

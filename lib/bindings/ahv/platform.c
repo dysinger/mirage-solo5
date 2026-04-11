@@ -33,6 +33,11 @@ void process_bootinfo(const void *arg)
     cpu_cycle_freq = bi->cpu_cycle_freq;
 }
 
+void platform_init(const void *arg)
+{
+    process_bootinfo(arg);
+}
+
 const char *platform_cmdline(void)
 {
     return cmdline;
@@ -47,4 +52,15 @@ int platform_set_tls_base(uint64_t base)
 {
     cpu_set_tls_base(base);
     return 0;
+}
+
+void platform_exit(int status, void *cookie)
+{
+    struct ahv_hc_halt h;
+
+    h.exit_status = status;
+    h.cookie = (AHV_GUEST_PTR(void *))cookie;
+
+    ahv_do_hypercall(AHV_HYPERCALL_HALT, &h);
+    for(;;);
 }
