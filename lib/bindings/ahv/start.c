@@ -50,5 +50,9 @@ void _start(const void *arg)
     solo5_exit(solo5_app_main(&si));
 }
 
-/* Note: ELF-specific declarations removed for AHV (macOS/Mach-O target) */
-/* These are handled by the AHV tender which directly loads the ELF */
+DECLARE_ELF_INTERP
+
+ABI1_NOTE_DECLARE_BEGIN{.abi_target = HVT_ABI_TARGET,
+                        .abi_version = HVT_ABI_VERSION} ABI1_NOTE_DECLARE_END
+
+DECLARE_OPENBSD_NOTE
