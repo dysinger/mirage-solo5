@@ -28,33 +28,8 @@
 #ifndef AHV_ABI_H
 #define AHV_ABI_H
 
-/*
- * ahv_abi.h: AHV guest hypercall ABI definitions.
- *
- * This header file must be kept self-contained with no external dependencies
- * other than C99 headers.
- */
-
-/* Self-contained types */
-#ifndef __SOLO5_TYPES_DEFINED
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long uint64_t;
-typedef signed char int8_t;
-typedef short int16_t;
-typedef int int32_t;
-typedef long int64_t;
-typedef unsigned long uintptr_t;
-typedef long intptr_t;
-typedef unsigned long size_t;
-typedef long ssize_t;
-#define bool _Bool
-#define true 1
-#define false 0
-#define NULL ((void*)0)
-#define __SOLO5_TYPES_DEFINED 1
-#endif
+#include <stddef.h>
+#include <stdint.h>
 
 #define AHV_ABI_VERSION 1
 #define HVT_ABI_VERSION 1
@@ -71,15 +46,11 @@ typedef uint64_t ahv_gpa_t;
 #else
 static inline void ahv_do_hypercall(int n, volatile void *arg)
 {
-    register uint64_t x0 asm("x0") = (uint64_t)arg;
-    register uint64_t x1 asm("x1") = (uint64_t)n;
-    // Use HVC #0 - this IS trapped by Apple's Hypervisor.framework
-    __asm__ __volatile__("hvc #0"
-                         : "=r"(x0), "=r"(x1)
-                         : "r"(x0), "r"(x1)
+    __asm__ __volatile__("str %w0, [%1]"
+                         :
+                         : "rZ"((uint32_t)((uint64_t)arg)),
+                           "r"((uint64_t)AHV_HYPERCALL_ADDRESS(n))
                          : "memory");
-    (void)x0;
-    (void)x1;
 }
 #endif
 

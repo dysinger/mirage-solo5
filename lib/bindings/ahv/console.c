@@ -20,33 +20,14 @@
 
 #include "bindings.h"
 #include "ahv_abi.h"
+#include <stdio.h>
 #include <string.h>
 
 void console_init(void)
 {
 }
 
-static void ahv_puts(const char *s, size_t len)
-{
-    struct ahv_hc_puts hc;
-    hc.data = (AHV_GUEST_PTR(const char *))s;
-    hc.len = len;
-    hc.ret = -1;
-    ahv_do_hypercall(AHV_HYPERCALL_PUTS, &hc);
-}
-
 void console_write(const char *buf, size_t len)
 {
-    ahv_puts(buf, len);
-}
-
-void solo5_console_write(const char *buf, size_t size)
-{
-    console_write(buf, size);
-}
-
-int platform_puts(const char *buf, int n)
-{
-    ahv_puts(buf, n);
-    return n;
+    fwrite(buf, 1, len, stdout);
 }
