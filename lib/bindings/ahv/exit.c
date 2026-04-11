@@ -12,41 +12,22 @@
  * WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
- * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
- * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+ * LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
  * NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
 #include "bindings.h"
-#include "ahv_abi.h"
-#include <string.h>
 
-void console_init(void)
+void solo5_exit(int status)
 {
+    log(INFO, "Solo5: solo5_exit(%d) called\n", status);
+    platform_exit(status, NULL);
 }
 
-static void ahv_puts(const char *s, size_t len)
+void solo5_abort(void)
 {
-    struct ahv_hc_puts hc;
-    hc.data = (AHV_GUEST_PTR(const char *))s;
-    hc.len = len;
-    hc.ret = -1;
-    ahv_do_hypercall(AHV_HYPERCALL_PUTS, &hc);
-}
-
-void console_write(const char *buf, size_t len)
-{
-    ahv_puts(buf, len);
-}
-
-void solo5_console_write(const char *buf, size_t size)
-{
-    console_write(buf, size);
-}
-
-int platform_puts(const char *buf, int n)
-{
-    ahv_puts(buf, n);
-    return n;
+    log(INFO, "Solo5: solo5_abort() called\n");
+    platform_exit(SOLO5_EXIT_ABORT, NULL);
 }

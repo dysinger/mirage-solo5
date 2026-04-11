@@ -21,6 +21,10 @@
 #ifndef SOLO5_H_INCLUDED
 #define SOLO5_H_INCLUDED
 
+/*
+ * Use standard headers when available (Linux headers via -I).
+ * For freestanding builds without headers, types come from bindings.h.
+ */
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
