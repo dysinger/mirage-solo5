@@ -71,11 +71,14 @@ typedef uint64_t ahv_gpa_t;
 #else
 static inline void ahv_do_hypercall(int n, volatile void *arg)
 {
-    __asm__ __volatile__("str %w0, [%1]"
-                         :
-                         : "rZ"((uint32_t)((uint64_t)arg)),
-                           "r"((uint64_t)AHV_HYPERCALL_ADDRESS(n))
+    register uint64_t x0 asm("x0") = (uint64_t)arg;
+    register uint64_t x1 asm("x1") = (uint64_t)n;
+    __asm__ __volatile__("hvc #0"
+                         : "=r"(x0), "=r"(x1)
+                         : "r"(x0), "r"(x1)
                          : "memory");
+    (void)x0;
+    (void)x1;
 }
 #endif
 
