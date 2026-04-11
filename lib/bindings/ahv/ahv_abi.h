@@ -73,8 +73,8 @@ static inline void ahv_do_hypercall(int n, volatile void *arg)
 {
     register uint64_t x0 asm("x0") = (uint64_t)arg;
     register uint64_t x1 asm("x1") = (uint64_t)n;
-    // Use BRK for debugging (should be trapped)
-    __asm__ __volatile__("brk #0"
+    // Use HVC #0 - this IS trapped by Apple's Hypervisor.framework
+    __asm__ __volatile__("hvc #0"
                          : "=r"(x0), "=r"(x1)
                          : "r"(x0), "r"(x1)
                          : "memory");
